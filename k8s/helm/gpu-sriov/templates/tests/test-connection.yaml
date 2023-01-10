@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "gpu-sriov.fullname" . }}-test-connection"
+  labels:
+    {{- include "gpu-sriov.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "gpu-sriov.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
