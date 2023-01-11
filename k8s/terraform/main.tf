@@ -1,10 +1,5 @@
 resource "null_resource" "gpu_sriov_setup" {
 
-  #for_each = {
-   # "node1" = {ip="192.168.1.107"}
-   # "node2" = {ip="192.168.1.111"}
-  #}    
-  
   for_each = toset(var.nodes)
 
   provisioner "remote-exec" {
