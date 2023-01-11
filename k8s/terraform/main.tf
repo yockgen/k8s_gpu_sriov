@@ -1,36 +1,27 @@
-resource "null_resource" "yockgen_test" {
+resource "null_resource" "gpu_sriov_setup" {
 
-  #provisioner "local-exec" {
-  #   command = "sudo echo 0 > /sys/class/drm/card0/device/sriov_numvfs && sudo echo 7 > /sys/class/drm/card0/device/sriov_numvfs"
-  #}
+  #for_each = {
+   # "node1" = {ip="192.168.1.107"}
+   # "node2" = {ip="192.168.1.111"}
+  #}    
+  
+  for_each = toset(var.nodes)
 
   provisioner "remote-exec" {
 
-    connection {
+    connection {    
       type     = "ssh"
       user     = var.username
-      password = var.pwd
-      host     = "192.168.1.111"
+      password = var.pwd      
+      #host = each.value.ip 
+      host = each.key
+
     }
 
     inline = [
       "echo 0 | sudo tee /sys/class/drm/card0/device/sriov_numvfs",
-      "echo 7 | sudo tee /sys/class/drm/card0/device/sriov_numvfs",
-    ]
-  }
-
-  provisioner "remote-exec" {
-
-    connection {
-      type     = "ssh"
-      user     = var.username
-      password = var.pwd
-      host     = "192.168.1.107"
-    }
-
-    inline = [
-      "echo 0 | sudo tee /sys/class/drm/card0/device/sriov_numvfs",
-      "echo 7 | sudo tee /sys/class/drm/card0/device/sriov_numvfs",
+      "export numvfs=$(cat /sys/class/drm/card0/device/sriov_totalvfs)",     
+      "echo $numvfs | sudo tee /sys/class/drm/card0/device/sriov_numvfs",
     ]
   }
 

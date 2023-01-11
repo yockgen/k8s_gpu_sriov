@@ -11,3 +11,6 @@ variable "pwd" {
   sensitive   = true
 }
 
+variable "nodes" {  
+  default = ["192.168.1.107","192.168.1.111"]        
+}
