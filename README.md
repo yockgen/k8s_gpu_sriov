@@ -4,7 +4,7 @@
 1. Kubernetes Cluster has been successfully setup and run
 2. Install terraform tool (https://developer.hashicorp.com/terraform/downloads)
 3. Install Helm tol (https://helm.sh/docs/intro/quickstart/)
-4. Host OS with Intel GPU SR-IOV enabled (e.g. https://ubuntu.com/download/iot/intel-iot)
+4. Host OS with Intel GPU SR-IOV patches (please contact author if you need help)
 
 
 ## Configuration
