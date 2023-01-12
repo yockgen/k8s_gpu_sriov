@@ -1,6 +1,6 @@
 resource "null_resource" "gpu_sriov_setup" {
 
-  for_each = toset(var.nodes)
+  for_each = var.nodes
 
   provisioner "remote-exec" {
 
@@ -8,8 +8,7 @@ resource "null_resource" "gpu_sriov_setup" {
       type     = "ssh"
       user     = var.username
       password = var.pwd      
-      #host = each.value.ip 
-      host = each.key
+      host = each.value.ip       
 
     }
 
@@ -17,6 +16,7 @@ resource "null_resource" "gpu_sriov_setup" {
       "echo 0 | sudo tee /sys/class/drm/card0/device/sriov_numvfs",
       "export numvfs=$(cat /sys/class/drm/card0/device/sriov_totalvfs)",     
       "echo $numvfs | sudo tee /sys/class/drm/card0/device/sriov_numvfs",
+
     ]
   }
 
@@ -44,7 +44,7 @@ resource "helm_release" "yockgen_gpu" {
 
 
   name = each.key
-  chart = "/data/synbench/k8s/helm/gpu-sriov"
+  chart = var.helm_chart
   namespace = "default"
   
   set {
