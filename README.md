@@ -1,4 +1,4 @@
-# Enabling Intel GPU SR-IOV on k8s and demo workload using Terraform
+# Enabling Intel GPU SR-IOV and demo workload on k8s via Terraform
 
 ## Prerequisite
 1. Kubernetes Cluster has been successfully setup and run
@@ -40,7 +40,6 @@ root@node1:/data/synbench/k8s/terraform# cat secret.tfvars
 pwd = "FakePasswordPleaseChange"
 ```
 
-
 ## Deploy GPU SR-IOV setting and benchmarking workload on K8s 
 
 1. Initiziate Terraform project (only for first time):
@@ -63,3 +62,5 @@ terraform apply --auto-approve -var-file="secret.tfvars"
 ```
 terraform destroy --auto-approve -var-file="secret.tfvars"   
 ```
+
+## Configuring execution time and timeout on individual SR-IOV Virtual GPU
