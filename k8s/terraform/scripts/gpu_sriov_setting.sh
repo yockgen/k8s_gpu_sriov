@@ -1,7 +1,5 @@
 #!/bin/bash
 
-PARAMS=$1
-
 count=$(jq length /tmp/gpu_sriov_config.json)
 for ((i=1; i <=$count ; i++)); do
 
@@ -14,5 +12,3 @@ for ((i=1; i <=$count ; i++)); do
   echo $vfschedexecq | tee -a /sys/class/drm/card0/iov/vf$i/gt/exec_quantum_ms
   echo $vfschedtimeout | tee -a /sys/class/drm/card0/iov/vf$i/gt/preempt_timeout_us
 done
-
-unset PARAMS
