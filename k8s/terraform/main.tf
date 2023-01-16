@@ -2,16 +2,14 @@ resource "null_resource" "gpu_sriov_setup" {
 
   for_each = var.nodes
 
-  provisioner "remote-exec" {
-
-    connection {    
+  connection {    
       type     = "ssh"
       user     = var.username
       password = var.pwd      
       host = each.value.ip       
+  }
 
-    }
-
+  provisioner "remote-exec" {
     inline = [
       "echo 0 | sudo tee /sys/class/drm/card0/device/sriov_numvfs",
       "export numvfs=$(cat /sys/class/drm/card0/device/sriov_totalvfs)",     
@@ -20,8 +18,26 @@ resource "null_resource" "gpu_sriov_setup" {
     ]
   }
 
-}
+  provisioner "file" {  
+    source      = "/data/synbench/k8s/terraform/scripts/gpu_sriov_setting.sh"
+    destination = "/tmp/gpu_sriov_settings.sh"
+  }
 
+  provisioner "file" {      
+    content     = "${jsonencode(var.gpu_sriov_config)}"
+    destination = "/tmp/gpu_sriov_config.json"
+  }
+
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo chmod +x /tmp/gpu_sriov_settings.sh",
+      "sudo /tmp/gpu_sriov_settings.sh",
+    ]
+  }
+
+ 
+}
 
 provider "helm" {
   kubernetes {
@@ -63,6 +79,10 @@ resource "helm_release" "yockgen_gpu" {
     value = each.value.idPod
 
   }
+
+  depends_on = [
+    null_resource.gpu_sriov_setup
+  ]
 }
 
 
