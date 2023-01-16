@@ -41,10 +41,25 @@ pwd = "FakePasswordPleaseChange"
 ```
 
 
-## Deploy GPU SR-IOV workload K8s cluster
+## Deploy GPU SR-IOV setting and benchmarking workload on K8s 
+
+1. Initiziate Terraform project (only for first time):
 ```
+cd /data/synbench/k8s/terraform
 terraform init    
+```
+
+2. Validation (everytime changes has been made)
+```
 terraform plan -var-file="secret.tfvars"     
-terraform destroy -var-file="secret.tfvars"   
-terraform apply -var-file="secret.tfvars"   
+```
+
+3. Deloyment (everytime changes has been made)
+```
+terraform apply --auto-approve -var-file="secret.tfvars"   
+```
+
+4. Remove the deployment 
+```
+terraform destroy --auto-approve -var-file="secret.tfvars"   
 ```
