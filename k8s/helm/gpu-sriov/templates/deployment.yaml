@@ -34,14 +34,14 @@ spec:
           - name: DISPLAY
             value: ":0"
         volumeMounts:
+          - name: xauth
+            mountPath: /root/.Xauthority
+        volumeMounts:
           - name: dev-gpu
             mountPath: /dev/dri/card0
         volumeMounts:
           - name: gpu-config
             mountPath: /share/default.txt
-        #volumeMounts:
-        #  - name: xauth
-        #    mountPath: /root/.Xauthority
       volumes:
         - name: dev-gpu
           hostPath:
@@ -49,7 +49,7 @@ spec:
         - name: gpu-config
           hostPath:
             path: /data/synbench/default.txt
-        #- name: xauth
-        #  hostPath:
-        #    path: /home/yockgenm/.Xauthority
+        - name: xauth
+          hostPath: 
+            path: /home/yockgenm/.Xauthority
 

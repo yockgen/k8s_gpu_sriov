@@ -33,6 +33,8 @@ resource "null_resource" "gpu_sriov_setup" {
     inline = [
       "sudo chmod +x /tmp/gpu_sriov_settings.sh",
       "sudo /tmp/gpu_sriov_settings.sh",
+      "sudo sysctl fs.inotify.max_user_watches=524288",
+      "sudo sysctl fs.inotify.max_user_instances=512"
     ]
   }
 
