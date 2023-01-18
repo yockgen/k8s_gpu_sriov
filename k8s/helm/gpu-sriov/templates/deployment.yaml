@@ -32,14 +32,14 @@ spec:
           - name: XDG_RUNTIME_DIR
             value: "/tmp"
           - name: DISPLAY
-            value: ":0"
+            value: "localhost:10.0"
         volumeMounts:
           - name: xauth
             mountPath: /root/.Xauthority
-        volumeMounts:
+          - name: x11
+            mountPath: /tmp/.X11-unix
           - name: dev-gpu
             mountPath: /dev/dri/card0
-        volumeMounts:
           - name: gpu-config
             mountPath: /share/default.txt
       volumes:
@@ -50,6 +50,11 @@ spec:
           hostPath:
             path: /data/synbench/default.txt
         - name: xauth
-          hostPath: 
+          hostPath:
             path: /home/yockgenm/.Xauthority
+            type: FileOrCreate
+        - name: x11
+          hostPath:
+            path: /tmp/.X11-unix/
+            type: Directory
 
