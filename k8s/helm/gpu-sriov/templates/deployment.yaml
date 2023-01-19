@@ -26,8 +26,6 @@ spec:
         securityContext:
           capabilities:
             add: ["NET_ADMIN", "SYS_TIME","NET_RAW"]
-          runAsUser: 0
-          privileged: true
         env:
           - name: XDG_RUNTIME_DIR
             value: "/tmp"
