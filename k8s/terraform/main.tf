@@ -82,6 +82,11 @@ resource "helm_release" "yockgen_gpu" {
 
   }
 
+  set {
+    name = "user"
+    value = var.username
+  }
+
   depends_on = [
     null_resource.gpu_sriov_setup
   ]
